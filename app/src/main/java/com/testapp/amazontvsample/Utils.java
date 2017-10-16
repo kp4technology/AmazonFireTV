@@ -12,7 +12,7 @@
  * the License.
  */
 
-package com.bigstar.amazontvsample;
+package com.testapp.amazontvsample;
 
 import android.content.Context;
 import android.graphics.Point;

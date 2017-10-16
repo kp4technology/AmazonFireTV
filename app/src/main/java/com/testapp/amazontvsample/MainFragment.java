@@ -12,7 +12,7 @@
  * the License.
  */
 
-package com.bigstar.amazontvsample;
+package com.testapp.amazontvsample;
 
 import java.net.URI;
 import java.util.Collections;

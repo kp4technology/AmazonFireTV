@@ -4,9 +4,9 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "com.bigstar.amazontvsample"
-        minSdkVersion 21
-        targetSdkVersion 26
+        applicationId "com.testapp.amazontvsample"
+        minSdkVersion 19
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -23,4 +23,7 @@ dependencies {
     compile 'com.android.support:leanback-v17:26.+'
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.github.bumptech.glide:glide:3.4.+'
+
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 }

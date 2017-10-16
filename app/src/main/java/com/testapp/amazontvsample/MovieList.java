@@ -1,4 +1,4 @@
-package com.bigstar.amazontvsample;
+package com.testapp.amazontvsample;
 
 import java.util.ArrayList;
 import java.util.List;

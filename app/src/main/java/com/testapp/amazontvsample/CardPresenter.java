@@ -12,7 +12,7 @@
  * the License.
  */
 
-package com.bigstar.amazontvsample;
+package com.testapp.amazontvsample;
 
 import android.graphics.drawable.Drawable;
 import android.support.v17.leanback.widget.ImageCardView;

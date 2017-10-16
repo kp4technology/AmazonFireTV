@@ -37,4 +37,8 @@
     <string name="error_fragment_message">An error occurred</string>
     <string name="dismiss_error">Dismiss</string>
     <string name="oops">Oops</string>
+
+    <!--Amazon IAP 2.0-->
+    <string name="iap_shared_secret_key">2:QL7Bi_kSAyEf8sGIJBklewFZuIJOHAoO0uGZOaCzIQypMVAhqYFApspSHPD4Jxj9:Iw_qiI6JNxNKViCEQK6U9g==</string>
+
 </resources>

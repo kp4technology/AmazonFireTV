@@ -1,16 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bigstar.amazontvsample">
+    package="com.testapp.amazontvsample">
+
+    <!-- Fire tv requirement -->
+    <uses-sdk android:minSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+    <!-- Android tv (fire tv) requirements -->
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
     <uses-feature
-        android:name="android.software.leanback"
-        android:required="true" />
+        android:name="android.hardware.faketouch"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.gps"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.sensor"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus and android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -35,5 +72,14 @@
         <activity android:name=".PlaybackOverlayActivity" />
         <activity android:name=".BrowseErrorActivity" />
     </application>
+
+    <!--Amazon IAP 2.0-->
+    <receiver android:name = "com.amazon.device.iap.ResponseReceiver" >
+        <intent-filter>
+            <action android:name = "com.amazon.inapp.purchasing.NOTIFY"
+                android:permission = "com.amazon.inapp.purchasing.Permission.NOTIFY" />
+        </intent-filter>
+    </receiver>
+    <meta-data android:name="billing.service" android:value="amazon.AmazonIabService" />
 
 </manifest>

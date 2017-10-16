@@ -1,4 +1,4 @@
-package com.bigstar.amazontvsample;
+package com.testapp.amazontvsample;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
