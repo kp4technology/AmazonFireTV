@@ -284,7 +284,7 @@ public class AmazonIapManager {
                                 : receipt.getCancelDate().getTime(),
                         receipt.getSku());
 
-        updatePayment(context, true, userId, receipt.getReceiptId(), "amazon");
+//        updatePayment(context, true, userId, receipt.getReceiptId(), "amazon");
 
     }
 
@@ -323,102 +323,102 @@ public class AmazonIapManager {
 
     public void updatePurchaseDetails(String userId, String receiptId) {
         Log.i(TAG, "=> " + userId + ", " + receiptId);
-        updatePayment(context, true, userId, receiptId, "amazon");
+//        updatePayment(context, true, userId, receiptId, "amazon");
     }
 
-    private void updatePayment(final Context context, final boolean showProgress, String amuserid, String amreceiptid, String vendor) {
-
-        String os = "";
-        if (AppConstants.isAndroid())
-            os = "androidtv";
-        else
-            os = "fire";
-
-        SharedPreferences settings = setUserDefaultsAndPreferences(null, context);
-        String device = settings.getString("device_id", "#FFFFFF");
-
-        if (!isConnectingToInternet(context)) {
-            showDialog(context, "Please check your internet connection.", "Okay");
-            return;
-        }
-
-        final ProgressDialog pDialog = new ProgressDialog(context);
-
-        if (showProgress) {
-            pDialog.setMessage("Updating...");
-            pDialog.setIndeterminate(true);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(AppConstants.getApiDomain())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        WebServices webServices = retrofit.create(WebServices.class);
-
-        Log.i("updatePayment", "\namuserid = " + amuserid + "\n" + "amreceiptid = " + amreceiptid + "\n"
-                + "vendor = " + vendor + "\n membership = One_Month" + "\n"
-                + "amsharedid = " + context.getString(R.string.iap_shared_secret_key)
-                + "\n" + "os = " + os + ", device = " + device);
-
-        Call call = webServices.updatePayment(amuserid, amreceiptid, vendor, "One_Month", context.getString(R.string.iap_shared_secret_key), os, device);
-
-
-        call.enqueue(new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) {
-
-                ResponseBody body = (ResponseBody) response.body();
-
-                if (response.body() == null) {
-                    if (showProgress)
-                        pDialog.dismiss();
-                    return;
-                }
-
-                try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(body.byteStream()));
-                    StringBuilder out = new StringBuilder();
-                    String newLine = System.getProperty("line.separator");
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        out.append(line);
-                        out.append(newLine);
-                    }
-
-                    Log.i("JSON raw", "=> " + out.toString());
-
-                    JSONObject jsonObject = new JSONObject(out.toString()).getJSONObject("items");
-
-                    if (jsonObject.getBoolean("status")) {
-                        User.updateUser(true, new User.userUpdated() {
-                            @Override
-                            public void complete() {
-                                Log.v(TAG, "Update user completed after canceling");
-                                showMessage(context.getString(R.string.preferences_membership_refreshed));
-                            }
-                        });
-                    } else {
-                        showDialog(context, "Something went wrong, please try refreshing membership.", "Okay");
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (showProgress)
-                    pDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                if (showProgress)
-                    pDialog.dismiss();
-            }
-        });
-    }
+//    private void updatePayment(final Context context, final boolean showProgress, String amuserid, String amreceiptid, String vendor) {
+//
+//        String os = "";
+//        if (AppConstants.isAndroid())
+//            os = "androidtv";
+//        else
+//            os = "fire";
+//
+//        SharedPreferences settings = setUserDefaultsAndPreferences(null, context);
+//        String device = settings.getString("device_id", "#FFFFFF");
+//
+//        if (!isConnectingToInternet(context)) {
+//            showDialog(context, "Please check your internet connection.", "Okay");
+//            return;
+//        }
+//
+//        final ProgressDialog pDialog = new ProgressDialog(context);
+//
+//        if (showProgress) {
+//            pDialog.setMessage("Updating...");
+//            pDialog.setIndeterminate(true);
+//            pDialog.setCancelable(false);
+//            pDialog.show();
+//        }
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(AppConstants.getApiDomain())
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        WebServices webServices = retrofit.create(WebServices.class);
+//
+//        Log.i("updatePayment", "\namuserid = " + amuserid + "\n" + "amreceiptid = " + amreceiptid + "\n"
+//                + "vendor = " + vendor + "\n membership = One_Month" + "\n"
+//                + "amsharedid = " + context.getString(R.string.iap_shared_secret_key)
+//                + "\n" + "os = " + os + ", device = " + device);
+//
+//        Call call = webServices.updatePayment(amuserid, amreceiptid, vendor, "One_Month", context.getString(R.string.iap_shared_secret_key), os, device);
+//
+//
+//        call.enqueue(new Callback() {
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//
+//                ResponseBody body = (ResponseBody) response.body();
+//
+//                if (response.body() == null) {
+//                    if (showProgress)
+//                        pDialog.dismiss();
+//                    return;
+//                }
+//
+//                try {
+//                    BufferedReader reader = new BufferedReader(new InputStreamReader(body.byteStream()));
+//                    StringBuilder out = new StringBuilder();
+//                    String newLine = System.getProperty("line.separator");
+//                    String line;
+//                    while ((line = reader.readLine()) != null) {
+//                        out.append(line);
+//                        out.append(newLine);
+//                    }
+//
+//                    Log.i("JSON raw", "=> " + out.toString());
+//
+//                    JSONObject jsonObject = new JSONObject(out.toString()).getJSONObject("items");
+//
+//                    if (jsonObject.getBoolean("status")) {
+//                        User.updateUser(true, new User.userUpdated() {
+//                            @Override
+//                            public void complete() {
+//                                Log.v(TAG, "Update user completed after canceling");
+//                                showMessage(context.getString(R.string.preferences_membership_refreshed));
+//                            }
+//                        });
+//                    } else {
+//                        showDialog(context, "Something went wrong, please try refreshing membership.", "Okay");
+//                    }
+//
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                if (showProgress)
+//                    pDialog.dismiss();
+//            }
+//
+//            @Override
+//            public void onFailure(Call call, Throwable t) {
+//                if (showProgress)
+//                    pDialog.dismiss();
+//            }
+//        });
+//    }
 
     private void verifyReceipt(final Context context, final boolean showProgress, String user, String receiptId) {
 

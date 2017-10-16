@@ -14,7 +14,9 @@
 
 package com.testapp.amazontvsample;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
@@ -54,6 +56,38 @@ public class Utils {
      */
     public static void showToast(Context context, int resourceId) {
         Toast.makeText(context, context.getString(resourceId), Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Shows a dialog.
+     */
+    public static void showDialog(Context context, String msg) {
+        new AlertDialog.Builder(context).setTitle(R.string.error)
+                .setMessage(msg)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    /**
+     * Shows a dialog.
+     */
+    public static void showDialog(Context context, int resourceId) {
+        new AlertDialog.Builder(context).setTitle(R.string.error)
+                .setMessage(resourceId)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .create()
+                .show();
     }
 
     public static int convertDpToPixel(Context ctx, int dp) {

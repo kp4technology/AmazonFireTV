@@ -117,6 +117,7 @@ public class MainFragment extends BrowseFragment {
         gridRowAdapter.add(getResources().getString(R.string.grid_view));
         gridRowAdapter.add(getString(R.string.error_fragment));
         gridRowAdapter.add(getResources().getString(R.string.personal_settings));
+        gridRowAdapter.add(getResources().getString(R.string.subscription));
         mRowsAdapter.add(new ListRow(gridHeader, gridRowAdapter));
 
         setAdapter(mRowsAdapter);
@@ -206,6 +207,8 @@ public class MainFragment extends BrowseFragment {
                 if (((String) item).indexOf(getString(R.string.error_fragment)) >= 0) {
                     Intent intent = new Intent(getActivity(), BrowseErrorActivity.class);
                     startActivity(intent);
+                } else if (((String) item).indexOf(getString(R.string.subscription)) >= 0) {
+                    startActivity(new Intent(getActivity(), BillingActivity.class));
                 } else {
                     Toast.makeText(getActivity(), ((String) item), Toast.LENGTH_SHORT)
                             .show();

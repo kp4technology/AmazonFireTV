@@ -19,6 +19,7 @@
     <string name="grid_view">Grid View</string>
     <string name="error_fragment">Error Fragment</string>
     <string name="personal_settings">Personal Settings</string>
+    <string name="subscription">Subscription</string>
     <string name="watch_trailer_1">Watch trailer</string>
     <string name="watch_trailer_2">FREE</string>
     <string name="rent_1">Rent By Day</string>
@@ -40,5 +41,6 @@
 
     <!--Amazon IAP 2.0-->
     <string name="iap_shared_secret_key">2:QL7Bi_kSAyEf8sGIJBklewFZuIJOHAoO0uGZOaCzIQypMVAhqYFApspSHPD4Jxj9:Iw_qiI6JNxNKViCEQK6U9g==</string>
+    <string name="title_activity_billing">BillingActivity</string>
 
 </resources>
