@@ -130,6 +130,7 @@ public class AmazonIapManager {
      * @paramx receiptId
      */
     public void handleSubscriptionPurchase(final Receipt receipt, final UserData userData) {
+        Log.i("onPurchaseResponse", "=> " + receipt.isCanceled() + " >> " + userData.getUserId() + " = " + receipt.getReceiptId());
         try {
             if (receipt.isCanceled()) {
                 // Check whether this receipt is for an expired or canceled
@@ -138,17 +139,19 @@ public class AmazonIapManager {
             } else {
                 // We strongly recommend that you verify the receipt on
                 // server-side.
-                if (!verifyReceiptFromYourService(receipt.getReceiptId(), userData)) {
-                    // if the purchase cannot be verified,
-                    // show relevant error message to the customer.
-                    Utils.showToast(context, "Purchase cannot be verified, please retry later.");
-                    return;
-                }
-                grantSubscriptionPurchase(receipt, userData);
+//                if (!verifyReceiptFromYourService(receipt.getReceiptId(), userData)) {
+//                    // if the purchase cannot be verified,
+//                    // show relevant error message to the customer.
+//                    Utils.showToast(context, "Purchase cannot be verified, please retry later.");
+//                    return;
+//                }
+//                grantSubscriptionPurchase(receipt, userData);
+
+                verifyReceiptFromYourService(receipt, userData);
             }
-            Log.i("onPurchaseResponse", "=> " + receipt.getReceiptId() + "=" + receipt.isCanceled() + ">>" + userData.getUserId());
             return;
         } catch (final Throwable e) {
+            e.printStackTrace();
             Utils.showToast(context, "Purchase cannot be completed, please retry");
         }
 
@@ -232,6 +235,12 @@ public class AmazonIapManager {
      * Reload the magazine subscription availability
      */
     public void refreshSubscriptionAvailability() {
+
+        // error meaning
+        // -1 = Generic Error
+        // 0 = No amazon user
+        // 1 = different user
+
         boolean available = subscriptionAvailable && userIapData != null;
         subscriptionAvailabilityListener.setSubscriptionAvailable(available,
                 userIapData != null && !userIapData.isSubsActiveCurrently());
@@ -299,9 +308,9 @@ public class AmazonIapManager {
      * "https://developer.amazon.com/appsandservices/apis/earn/in-app-purchasing/docs/rvs"
      * >Appstore's Receipt Verification Service</a>
      */
-    private boolean verifyReceiptFromYourService(final String receiptId, final UserData userData) {
+    private boolean verifyReceiptFromYourService(final Receipt receipt, final UserData userData) {
         // TODO Add your own server side accessing and verification code
-        verifyReceipt(context, true, userData.getUserId(), receiptId);
+        verifyReceipt(context, true, userData.getUserId(), receipt,userData);
         return false;
     }
 
@@ -420,7 +429,7 @@ public class AmazonIapManager {
 //        });
 //    }
 
-    private void verifyReceipt(final Context context, final boolean showProgress, String user, String receiptId) {
+    private void verifyReceipt(final Context context, final boolean showProgress, String user, final Receipt receipt, final UserData userData) {
 
 //        SharedPreferences settings = setUserDefaultsAndPreferences(null, context);
 //        String device = settings.getString("device_id", "#FFFFFF");
@@ -446,7 +455,7 @@ public class AmazonIapManager {
 
         WebServices webServices = retrofit.create(WebServices.class);
 
-        Call call = webServices.verifyReceipt(context.getString(R.string.iap_shared_secret_key), user, receiptId);
+        Call call = webServices.verifyReceipt(context.getString(R.string.iap_shared_secret_key), user, receipt.getReceiptId());
 
 
         call.enqueue(new Callback() {
@@ -454,6 +463,9 @@ public class AmazonIapManager {
             public void onResponse(Call call, Response response_main) {
 
                 ResponseBody body = (ResponseBody) response_main.body();
+
+                Log.i(TAG,"Amazon RVS : Code => "+response_main.code()+"/ Body => "+response_main.body());
+
                 try {
 
                     switch (response_main.code()) {
@@ -461,24 +473,28 @@ public class AmazonIapManager {
                             System.out.println("Amazon RVS Error: Invalid receiptID");
                             // Process Response Data locally
                             // Respond to app
+                            Utils.showToast(context, "Purchase cannot be verified, please retry later.");
                             break;
 
                         case 496:
                             System.out.println("Amazon RVS Error: Invalid developerSecret");
                             // Process Response Data locally
                             // Respond to app
+                            Utils.showToast(context, "Purchase cannot be verified, please retry later.");
                             break;
 
                         case 497:
                             System.out.println("Amazon RVS Error: Invalid userId");
                             // Process Response Data locally
                             // Respond to app
+                            Utils.showToast(context, "Purchase cannot be verified, please retry later.");
                             break;
 
                         case 500:
                             System.out.println("Amazon RVS Error: Internal Server Error");
                             // Process Response Data locally
                             // Respond to app
+                            Utils.showToast(context, "Purchase cannot be verified, please retry later.");
                             break;
 
                         case 200:
@@ -509,10 +525,13 @@ public class AmazonIapManager {
                             long cancelDate = responseJson.optLong("cancelDate");
                             boolean testTransaction = responseJson.optBoolean("testTransaction");
 
-                        showDialog(context,"Payment Successful","Okay");
+                            showDialog(context, "Payment Successful", "Okay");
 
                             // Process Response Data locally
                             // Respond to app
+
+
+                        grantSubscriptionPurchase(receipt, userData);
 
                             break;
 
@@ -520,6 +539,7 @@ public class AmazonIapManager {
                             System.out.println("Amazon RVS Error: Undefined Response Code From Amazon RVS");
                             // Process Response Data locally
                             // Respond to app
+                            Utils.showToast(context, "Purchase cannot be verified, please retry later.");
                             break;
                     }
 
@@ -530,6 +550,7 @@ public class AmazonIapManager {
                     e.printStackTrace();
                     // Process Response Data locally
                     // Respond to app
+                    Utils.showToast(context, "Purchase cannot be verified, please retry later.");
                 } catch (IOException e) {
 
                     // As a best practice, replace the following logic with logic for logging.
@@ -537,8 +558,10 @@ public class AmazonIapManager {
                     e.printStackTrace();
                     // Process Response Data locally
                     // Respond to app
+                    Utils.showToast(context, "Purchase cannot be verified, please retry later.");
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utils.showToast(context, "Purchase cannot be verified, please retry later.");
                 }
 
                 if (showProgress)

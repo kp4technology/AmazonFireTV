@@ -23,6 +23,7 @@ public class BillingActivity extends Activity implements SubscriptionAvailabilit
     private Context context;
 
     private Button btnPurchase;
+    private boolean isExtraError = false;
 
     //Amazon IAP 2.0
     private AmazonIapManager amazonIapManager;
@@ -97,11 +98,18 @@ public class BillingActivity extends Activity implements SubscriptionAvailabilit
                 btnPurchase.setEnabled(true);
             } else {
                 btnPurchase.setEnabled(false);
-                Utils.showDialog(context,"Looks like you already purchased subscription, Thank you!");
+                Utils.showDialog(context, "Looks like you already purchased subscription, Thank you!");
             }
         } else {
+
+//            if (isExtraError)
+//                return;
+
             btnPurchase.setEnabled(false);
-            Utils.showDialog(context,"Sorry, please try after sometiome. Subscription is not available right now.");
+            Utils.showDialog(context, "Sorry, please try after sometime. Subscription is not available right now.");
+
+            isExtraError = true;
+
         }
     }
 }

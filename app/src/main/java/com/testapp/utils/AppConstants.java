@@ -8,7 +8,7 @@ public class AppConstants {
     private static boolean DEBUG = true;
     private static boolean isAndroid = false;
     private static String API_DOMAIN = "";
-    private static String RVS_DOMAIN= "http://192.168.1.22:8080/RVSSandbox/";// Live RVS Domain = "https://appstore-sdk.amazon.com/"
+    private static String RVS_DOMAIN= "http://192.168.1.17:8080/RVSSandbox/";// Live RVS Domain = "https://appstore-sdk.amazon.com/"
 
     public static String getApiDomain() {
         return API_DOMAIN;

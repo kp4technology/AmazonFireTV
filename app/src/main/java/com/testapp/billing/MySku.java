@@ -11,7 +11,7 @@ package com.testapp.billing;
 public enum MySku {
 
     //The only subscription product used in this sample app
-    MY_PREMIUM_SUBS("com.testapp.amazontvsample.premium", "US");
+    MY_PREMIUM_SUBS("com.testapp.amazontvsample.premium.monthly", "US");
 
     private final String sku;
     private final String availableMarkpetplace;
