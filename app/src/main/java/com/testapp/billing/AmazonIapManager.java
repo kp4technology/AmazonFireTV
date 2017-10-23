@@ -310,7 +310,7 @@ public class AmazonIapManager {
      */
     private boolean verifyReceiptFromYourService(final Receipt receipt, final UserData userData) {
         // TODO Add your own server side accessing and verification code
-        verifyReceipt(context, true, userData.getUserId(), receipt,userData);
+        verifyReceipt(context, true, userData.getUserId(), receipt, userData);
         return false;
     }
 
@@ -455,7 +455,8 @@ public class AmazonIapManager {
 
         WebServices webServices = retrofit.create(WebServices.class);
 
-        Call call = webServices.verifyReceipt(context.getString(R.string.iap_shared_secret_key), user, receipt.getReceiptId());
+//        Call call = webServices.verifyReceipt(context.getString(R.string.iap_shared_secret_key), user, receipt.getReceiptId());
+        Call call = webServices.verifyReceipt("version/1.0/verifyReceiptId/" + "developer/" + context.getString(R.string.iap_shared_secret_key) + "/user/" + user + "/receiptId/" + receipt.getReceiptId());
 
 
         call.enqueue(new Callback() {
@@ -464,7 +465,7 @@ public class AmazonIapManager {
 
                 ResponseBody body = (ResponseBody) response_main.body();
 
-                Log.i(TAG,"Amazon RVS : Code => "+response_main.code()+"/ Body => "+response_main.body());
+                Log.i(TAG, "Amazon RVS : Code => " + response_main.code() + "/ Body => " + response_main.body());
 
                 try {
 
@@ -525,13 +526,13 @@ public class AmazonIapManager {
                             long cancelDate = responseJson.optLong("cancelDate");
                             boolean testTransaction = responseJson.optBoolean("testTransaction");
 
-                            showDialog(context, "Payment Successful", "Okay");
+                            showDialog(context, "Purchase verified Successfully", "Okay");
 
-                            // Process Response Data locally
+                            // Process Response Data locally or submit to your server
                             // Respond to app
 
 
-                        grantSubscriptionPurchase(receipt, userData);
+                            grantSubscriptionPurchase(receipt, userData);
 
                             break;
 

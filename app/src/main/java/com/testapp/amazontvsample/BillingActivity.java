@@ -101,15 +101,7 @@ public class BillingActivity extends Activity implements SubscriptionAvailabilit
                 Utils.showDialog(context, "Looks like you already purchased subscription, Thank you!");
             }
         } else {
-
-//            if (isExtraError)
-//                return;
-
             btnPurchase.setEnabled(false);
-            Utils.showDialog(context, "Sorry, please try after sometime. Subscription is not available right now.");
-
-            isExtraError = true;
-
         }
     }
 }
